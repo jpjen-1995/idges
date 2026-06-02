@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IDGES V2.0 - Gestion des licences sportives</title>
+  <title>IDGES V2.0 - Gestion des licences sportives </title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
@@ -65,6 +65,10 @@
     
     /* iframe d'impression invisible */
     .print-iframe { position: absolute; width: 0; height: 0; border: 0; visibility: hidden; }
+    
+    /* Permissions checkboxes */
+    .perm-group { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0; }
+    .perm-group label { margin-right: 15px; font-weight: normal; }
   </style>
 </head>
 <body>
@@ -73,9 +77,9 @@
 <div id="loginPage">
   <div class="login-card">
     <div class="login-logo">⚽ IDGES V2.0</div>
-    <div class="login-subtitle">by Eniktech</div>
+    <div class="login-subtitle">Par Eniktech<br>Gestion avancée des utilisateurs</div>
     <form id="loginForm">
-      <div class="mb-3"><label for="username">Nom d'utilisateur</label><input type="text" class="form-control" id="username" placeholder="admin" required></div>
+      <div class="mb-3"><label for="username">Nom d'utilisateur</label><input type="text" class="form-control" id="username" placeholder="entrer votre identifiant" required></div>
       <div class="mb-3"><label for="password">Mot de passe</label><input type="password" class="form-control" id="password" required></div>
       <button type="submit" class="btn btn-primary w-100">Se connecter</button>
     </form>
@@ -87,7 +91,7 @@
 <div id="appContent" style="display: none;">
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
-      <a class="navbar-brand app-brand" href="#">⚽ IDGES V2.0</a>
+      <a class="navbar-brand app-brand" href="#">⚽ IDGES V2.0 </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="nav nav-tabs ms-auto me-3" id="mainTabs">
@@ -108,7 +112,7 @@
 
   <div class="container mt-4">
     <div class="tab-content" id="mainTabsContent">
-      <!-- CENTRES (identique) -->
+      <!-- CENTRES -->
       <div class="tab-pane show active" data-panel="centresTab">
         <h4>🏟️ Centres de formation</h4>
         <div class="mb-3 d-flex justify-content-between">
@@ -153,7 +157,7 @@
           <button class="btn btn-outline-success btn-sm" id="btnPlancheA4Portrait">🖨️ Planche A4 (Portrait)</button>
           <button class="btn btn-outline-success btn-sm" id="btnPlancheA4Landscape">🖨️ Planche A4 (Paysage)</button>
         </div>
-        <div class="table-responsive"><table class="table table-striped" id="licencesTable"><thead class="table-dark"><tr><th>N° Licence</th><th>Nom</th><th>Catégorie</th><th>Saison</th><th>Sexe</th><th>Actions</th></tr></thead><tbody></tbody></table></div>
+        <div class="table-responsive"><table class="table table-striped" id="licencesTable"><thead class="table-dark"><tr><th>N° Licence</th><th>Nom</th><th>Catégorie</th><th>Saison</th><th>Sexe</th><th>Actions</th></tr></thead><tbody></tbody><table></div>
       </div>
 
       <!-- IMPORT CSV -->
@@ -168,10 +172,9 @@
         </div>
       </div>
 
-      <!-- PARAMÈTRES : deux blocs distincts -->
+      <!-- PARAMÈTRES -->
       <div class="tab-pane" data-panel="settingsTab" style="display:none;">
         <h4>Paramètres graphiques des cartes</h4>
-        
         <!-- BLOC PORTRAIT -->
         <div class="settings-block" id="portraitBlock">
           <h4>📄 Configuration PORTRAIT (55x85 mm)</h4>
@@ -189,13 +192,8 @@
             </div>
             <div class="col-12"><button type="submit" class="btn btn-primary">Enregistrer configuration Portrait</button><button type="button" class="btn btn-outline-danger ms-2 btn-reset-settings" data-orient="portrait">↺ Réinitialiser</button></div>
           </form>
-          <hr>
-          <h5>Aperçu (Portrait)</h5>
-          <div class="preview-container">
-            <div class="card-preview" id="portraitPreview"></div>
-          </div>
+          <hr><h5>Aperçu (Portrait)</h5><div class="preview-container"><div class="card-preview" id="portraitPreview"></div></div>
         </div>
-
         <!-- BLOC PAYSAGE -->
         <div class="settings-block" id="landscapeBlock">
           <h4>📄 Configuration PAYSAGE (85x55 mm)</h4>
@@ -213,26 +211,50 @@
             </div>
             <div class="col-12"><button type="submit" class="btn btn-primary">Enregistrer configuration Paysage</button><button type="button" class="btn btn-outline-danger ms-2 btn-reset-settings" data-orient="landscape">↺ Réinitialiser</button></div>
           </form>
-          <hr>
-          <h5>Aperçu (Paysage)</h5>
-          <div class="preview-container">
-            <div class="card-preview landscape" id="landscapePreview"></div>
-          </div>
+          <hr><h5>Aperçu (Paysage)</h5><div class="preview-container"><div class="card-preview landscape" id="landscapePreview"></div></div>
         </div>
-
         <hr>
         <h5>💾 Gestion des données (séparée des paramètres)</h5>
         <div class="row"><div class="col-md-4"><button class="btn btn-outline-info w-100" id="btnExportDataOnly">📤 Exporter les données</button></div><div class="col-md-4"><label class="form-label">📥 Importer des données</label><input type="file" id="importDataOnlyFile" accept=".json" class="form-control"><button class="btn btn-outline-warning mt-2 w-100" id="btnImportDataOnly">Remplacer les données</button></div><div class="col-md-4"><button class="btn btn-outline-danger w-100" id="btnClearData">🗑️ Effacer toutes les données</button></div></div>
-        <hr><h5>Sauvegarde complète (inclut les paramètres double configuration)</h5>
-        <div class="row"><div class="col-md-6"><button class="btn btn-info w-100" id="btnExportFull">📤 Exporter tout</button></div><div class="col-md-6"><label class="form-label">📥 Importer une sauvegarde</label><input type="file" id="importFullFile" accept=".json" class="form-control"><button class="btn btn-warning mt-2 w-100" id="btnImportFull">Restaurer</button></div></div>
-        <hr><h5>⚙️ Configuration seule (sans les données)</h5>
-        <div class="row"><div class="col-md-4"><button class="btn btn-outline-secondary w-100" id="btnExportSettingsOnly">📤 Exporter les paramètres</button></div><div class="col-md-8"><label class="form-label">📥 Importer des paramètres</label><input type="file" id="importSettingsFile" accept=".json" class="form-control"><button class="btn btn-outline-secondary mt-2 w-100" id="btnImportSettingsOnly">Remplacer les paramètres</button></div></div>
+        <hr><h5>Sauvegarde complète</h5><div class="row"><div class="col-md-6"><button class="btn btn-info w-100" id="btnExportFull">📤 Exporter tout</button></div><div class="col-md-6"><label class="form-label">📥 Importer une sauvegarde</label><input type="file" id="importFullFile" accept=".json" class="form-control"><button class="btn btn-warning mt-2 w-100" id="btnImportFull">Restaurer</button></div></div>
+        <hr><h5>⚙️ Configuration seule</h5><div class="row"><div class="col-md-4"><button class="btn btn-outline-secondary w-100" id="btnExportSettingsOnly">📤 Exporter les paramètres</button></div><div class="col-md-8"><label class="form-label">📥 Importer des paramètres</label><input type="file" id="importSettingsFile" accept=".json" class="form-control"><button class="btn btn-outline-secondary mt-2 w-100" id="btnImportSettingsOnly">Remplacer les paramètres</button></div></div>
       </div>
 
-      <!-- UTILISATEURS -->
+      <!-- UTILISATEURS avec permissions -->
       <div class="tab-pane" data-panel="usersTab" style="display:none;">
         <h4>Gestion des utilisateurs</h4>
-        <div class="row"><div class="col-md-4"><h5>Ajouter</h5><form id="addUserForm"><div class="mb-3"><input type="text" class="form-control" id="newUsername" placeholder="Nom utilisateur" required></div><div class="mb-3"><input type="password" class="form-control" id="newPassword" placeholder="Mot de passe" required></div><div class="mb-3"><select class="form-select" id="newRole"><option value="user">Utilisateur</option><option value="admin">Admin</option></select></div><button type="submit" class="btn btn-primary w-100">Créer</button></form></div><div class="col-md-8"><h5>Liste</h5><table class="table table-striped" id="usersTable"><thead class="table-dark"><tr><th>Utilisateur</th><th>Rôle</th><th>Actions</th></tr></thead><tbody></tbody></table></div></div>
+        <div class="row">
+          <div class="col-md-5">
+            <div class="card">
+              <div class="card-header">Ajouter / Modifier un utilisateur</div>
+              <div class="card-body">
+                <form id="userForm">
+                  <input type="hidden" id="editUserId">
+                  <div class="mb-2"><label>Nom d'utilisateur</label><input type="text" id="userUsername" class="form-control" required></div>
+                  <div class="mb-2"><label>Mot de passe</label><input type="password" id="userPassword" class="form-control" placeholder="Laisser vide pour conserver"></div>
+                  <div class="mb-2"><label>Permissions</label>
+                    <div class="perm-group">
+                      <label><input type="checkbox" id="perm_centres_view"> Voir centres</label>
+                      <label><input type="checkbox" id="perm_centres_edit"> Gérer centres (ajout/modif/suppr)</label>
+                      <label><input type="checkbox" id="perm_licences_view"> Voir licences</label>
+                      <label><input type="checkbox" id="perm_licences_edit"> Gérer licences (création/modif/suppr)</label>
+                      <label><input type="checkbox" id="perm_import"> Importer CSV</label>
+                      <label><input type="checkbox" id="perm_print"> Imprimer (bordereau/planches)</label>
+                      <label><input type="checkbox" id="perm_settings"> Modifier paramètres</label>
+                      <label><input type="checkbox" id="perm_users"> Gérer utilisateurs</label>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Enregistrer</button>
+                  <button type="button" id="cancelUserEdit" class="btn btn-secondary">Annuler</button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-7">
+            <h5>Liste des utilisateurs</h5>
+            <div class="table-responsive"><table class="table table-striped" id="usersTable"><thead class="table-dark"><tr><th>Utilisateur</th><th>Permissions</th><th>Actions</th></tr></thead><tbody></tbody></table></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -254,9 +276,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
   (function(){
-    // ---------- IndexedDB (version 2 pour double config) ----------
+    // ---------- IndexedDB (version 3 pour ajouter permissions) ----------
     const DB_NAME = 'IDGesDB';
-    const DB_VERSION = 2;
+    const DB_VERSION = 3;
     let db = null;
 
     function openDB() {
@@ -278,6 +300,10 @@
           if (!db.objectStoreNames.contains('users')) {
             const store = db.createObjectStore('users', { keyPath: 'id', autoIncrement: true });
             store.createIndex('username', 'username', { unique: true });
+          } else {
+            // Migration : ajouter champ permissions si absent
+            const store = e.target.transaction.objectStore('users');
+            if (!store.indexNames.contains('username')) store.createIndex('username', 'username', { unique: true });
           }
           if (!db.objectStoreNames.contains('settings')) db.createObjectStore('settings', { keyPath: 'key' });
           if (!db.objectStoreNames.contains('counter')) db.createObjectStore('counter', { keyPath: 'id' });
@@ -303,9 +329,35 @@
     async function deleteLicence(id) { const s=await getStore('licenses','readwrite'); return new Promise(r=>s.delete(id).onsuccess=r); }
     async function deleteLicencesByCentre(centreId, saison) { const ls=await loadLicences(); for(let l of ls.filter(l=>l.centreId===centreId && l.saison===saison)) await deleteLicence(l.id); }
 
-    // Users
-    async function loadUsers() { const s=await getStore('users'); return new Promise(r=>s.getAll().onsuccess=e=>r(e.target.result)); }
+    // Users avec permissions
+    async function loadUsers() { 
+      const s=await getStore('users'); 
+      const users = await new Promise(r=>s.getAll().onsuccess=e=>r(e.target.result));
+      // Migration : ajouter permissions par défaut pour les anciens comptes
+      for(let u of users) {
+        if(!u.permissions) {
+          if(u.role === 'admin') {
+            u.permissions = {
+              centres_view: true, centres_edit: true,
+              licences_view: true, licences_edit: true,
+              import: true, print: true,
+              settings: true, users: true
+            };
+          } else {
+            u.permissions = {
+              centres_view: true, centres_edit: false,
+              licences_view: true, licences_edit: true,
+              import: false, print: true,
+              settings: false, users: false
+            };
+          }
+          await updateUser(u);
+        }
+      }
+      return users;
+    }
     async function saveUser(u) { const s=await getStore('users','readwrite'); return new Promise(r=>s.add(u).onsuccess=e=>r(e.target.result)); }
+    async function updateUser(u) { const s=await getStore('users','readwrite'); return new Promise(r=>s.put(u).onsuccess=e=>r(e.target.result)); }
     async function deleteUser(id) { const s=await getStore('users','readwrite'); return new Promise(r=>s.delete(id).onsuccess=r); }
 
     // Settings (double config)
@@ -362,6 +414,7 @@
     // Variables globales
     let currentUser=null;
     let currentCentre=null;
+    let currentPermissions = null;
     const loginPage=document.getElementById('loginPage');
     const appContent=document.getElementById('appContent');
     const currentUserDisplay=document.getElementById('currentUserDisplay');
@@ -369,7 +422,42 @@
     const usersTabNav=document.getElementById('usersTabNav');
     const printFrame = document.getElementById('printFrame');
 
-    // Centre display (corrigé pour éviter "undefined")
+    // Vérification des permissions
+    function hasPermission(perm) {
+      return currentPermissions && currentPermissions[perm] === true;
+    }
+
+    // Appliquer les restrictions d'interface selon permissions
+    function applyPermissionsUI() {
+      // Centres
+      const btnAddCentre = document.getElementById('btnAddCentre');
+      if(btnAddCentre) btnAddCentre.style.display = hasPermission('centres_edit') ? 'inline-block' : 'none';
+      // Renommer/supprimer centres seront gérés dans les boutons dynamiques
+      // Licences
+      const btnGenerateLicence = document.getElementById('btnGenerateLicence');
+      if(btnGenerateLicence) btnGenerateLicence.disabled = !hasPermission('licences_edit');
+      const licenceFormInputs = document.querySelectorAll('#licenceForm input, #licenceForm select');
+      licenceFormInputs.forEach(inp => inp.disabled = !hasPermission('licences_edit'));
+      // Import
+      const importTab = document.querySelector('[data-panel="importTab"]');
+      if(importTab) importTab.style.display = hasPermission('import') ? 'block' : 'none';
+      // Paramètres
+      const settingsTab = document.querySelector('[data-panel="settingsTab"]');
+      if(settingsTab) settingsTab.style.display = hasPermission('settings') ? 'block' : 'none';
+      // Utilisateurs (onglet)
+      usersTabNav.style.display = hasPermission('users') ? 'block' : 'none';
+      // Impression
+      const btnBordereau = document.getElementById('btnBordereau');
+      const btnPlanchePortrait = document.getElementById('btnPlancheA4Portrait');
+      const btnPlancheLandscape = document.getElementById('btnPlancheA4Landscape');
+      if(btnBordereau) btnBordereau.style.display = hasPermission('print') ? 'inline-block' : 'none';
+      if(btnPlanchePortrait) btnPlanchePortrait.style.display = hasPermission('print') ? 'inline-block' : 'none';
+      if(btnPlancheLandscape) btnPlancheLandscape.style.display = hasPermission('print') ? 'inline-block' : 'none';
+      // Exporter/Importer données (toujours accessible ? mais on peut restreindre)
+      // On laisse accessible à tous par défaut, mais on peut ajouter une permission si besoin.
+    }
+
+    // Centre display
     async function updateCentreDisplay() {
       if(currentCentre && currentCentre.name){
         currentCenterDisplay.innerHTML=`🏟️ <strong>${currentCentre.name}</strong> (${currentCentre.saison})`;
@@ -378,7 +466,6 @@
         document.getElementById('listCentreName').innerText=currentCentre.name;
         document.getElementById('importCentreName').innerText=currentCentre.name;
         document.getElementById('noCentreAlert').style.display='none';
-        document.getElementById('btnGenerateLicence').classList.remove('disabled-btn');
       } else {
         currentCenterDisplay.innerHTML='🏟️ Aucun centre';
         document.getElementById('centreActifLabel').innerHTML='Aucun';
@@ -386,11 +473,10 @@
         document.getElementById('listCentreName').innerText='?';
         document.getElementById('importCentreName').innerText='?';
         document.getElementById('noCentreAlert').style.display='block';
-        document.getElementById('btnGenerateLicence').classList.add('disabled-btn');
       }
     }
 
-    // Centres list
+    // Rafraîchir centres (avec contrôles permissions sur les boutons)
     async function refreshCentresList() {
       const centres=await loadCentres();
       const licences=await loadLicences();
@@ -399,7 +485,15 @@
       for(const c of centres){
         const nb=licences.filter(l=>l.centreId===c.id && l.saison===c.saison).length;
         const tr=document.createElement('tr');
-        tr.innerHTML=`<td>${c.name}</td><td>${c.saison}</td><td>${nb}</td><td><button class="btn btn-sm btn-primary select-centre-btn" data-id="${c.id}" data-name="${c.name}" data-saison="${c.saison}">✔️</button> <button class="btn btn-sm btn-outline-secondary rename-centre-btn" data-id="${c.id}" data-name="${c.name}" data-saison="${c.saison}">✏️</button> <button class="btn btn-sm btn-danger delete-centre-btn" data-id="${c.id}" data-name="${c.name}" data-saison="${c.saison}">🗑️</button></td>`;
+        let actions = '';
+        if(hasPermission('centres_edit')) {
+          actions = `<button class="btn btn-sm btn-primary select-centre-btn" data-id="${c.id}" data-name="${c.name}" data-saison="${c.saison}">✔️</button>
+                     <button class="btn btn-sm btn-outline-secondary rename-centre-btn" data-id="${c.id}" data-name="${c.name}" data-saison="${c.saison}">✏️</button>
+                     <button class="btn btn-sm btn-danger delete-centre-btn" data-id="${c.id}" data-name="${c.name}" data-saison="${c.saison}">🗑️</button>`;
+        } else {
+          actions = `<button class="btn btn-sm btn-primary select-centre-btn" data-id="${c.id}" data-name="${c.name}" data-saison="${c.saison}">✔️</button>`;
+        }
+        tr.innerHTML=`<td>${c.name}</td><td>${c.saison}</td><td>${nb}</td><td>${actions}</td>`;
         tbody.appendChild(tr);
       }
       document.querySelectorAll('.select-centre-btn').forEach(btn=>btn.onclick=async()=>{
@@ -409,26 +503,29 @@
         updateCategoriePreview();
         switchTab('licencesTab');
       });
-      document.querySelectorAll('.rename-centre-btn').forEach(btn=>btn.onclick=()=>{
-        document.getElementById('renameOldId').value=btn.dataset.id;
-        document.getElementById('renameNewName').value=btn.dataset.name;
-        document.getElementById('renameNewSaison').value=btn.dataset.saison;
-        document.getElementById('renameCentreForm').style.display='block';
-        document.getElementById('addCentreForm').style.display='none';
-      });
-      document.querySelectorAll('.delete-centre-btn').forEach(btn=>btn.onclick=async()=>{
-        const id=parseInt(btn.dataset.id), name=btn.dataset.name, saison=btn.dataset.saison;
-        if(!confirm(`Supprimer le centre "${name}" et toutes ses licences ?`)) return;
-        await deleteLicencesByCentre(id,saison);
-        await deleteCentre(id);
-        if(currentCentre?.id===id){ currentCentre=null; await updateCentreDisplay(); }
-        await refreshCentresList();
-        await refreshLicenceList();
-      });
+      if(hasPermission('centres_edit')) {
+        document.querySelectorAll('.rename-centre-btn').forEach(btn=>btn.onclick=()=>{
+          document.getElementById('renameOldId').value=btn.dataset.id;
+          document.getElementById('renameNewName').value=btn.dataset.name;
+          document.getElementById('renameNewSaison').value=btn.dataset.saison;
+          document.getElementById('renameCentreForm').style.display='block';
+          document.getElementById('addCentreForm').style.display='none';
+        });
+        document.querySelectorAll('.delete-centre-btn').forEach(btn=>btn.onclick=async()=>{
+          const id=parseInt(btn.dataset.id), name=btn.dataset.name, saison=btn.dataset.saison;
+          if(!confirm(`Supprimer le centre "${name}" et toutes ses licences ?`)) return;
+          await deleteLicencesByCentre(id,saison);
+          await deleteCentre(id);
+          if(currentCentre?.id===id){ currentCentre=null; await updateCentreDisplay(); }
+          await refreshCentresList();
+          await refreshLicenceList();
+        });
+      }
     }
-    document.getElementById('btnAddCentre').onclick=()=>{ document.getElementById('addCentreForm').style.display='block'; document.getElementById('renameCentreForm').style.display='none'; };
+    document.getElementById('btnAddCentre').onclick=()=>{ if(hasPermission('centres_edit')) { document.getElementById('addCentreForm').style.display='block'; document.getElementById('renameCentreForm').style.display='none'; } };
     document.getElementById('btnCancelAddCentre').onclick=()=>document.getElementById('addCentreForm').style.display='none';
     document.getElementById('btnSaveCentre').onclick=async()=>{
+      if(!hasPermission('centres_edit')) return;
       const name=document.getElementById('newCentreName').value.trim(), saison=document.getElementById('newCentreSaison').value.trim();
       if(!name||!saison) return alert('Nom et saison requis');
       const centres=await loadCentres();
@@ -443,6 +540,7 @@
       document.getElementById('newCentreSaison').value='';
     };
     document.getElementById('btnRenameCentre').onclick=async()=>{
+      if(!hasPermission('centres_edit')) return;
       const id=parseInt(document.getElementById('renameOldId').value), newName=document.getElementById('renameNewName').value.trim(), newSaison=document.getElementById('renameNewSaison').value.trim();
       if(!newName||!newSaison) return alert('Nom et saison requis');
       const centres=await loadCentres();
@@ -471,6 +569,7 @@
     // Create licence
     document.getElementById('licenceForm').addEventListener('submit',async(e)=>{
       e.preventDefault();
+      if(!hasPermission('licences_edit')) return alert('Permission insuffisante');
       if(!currentCentre) return alert('Sélectionnez un centre');
       const nom=document.getElementById('nom').value.trim(), dateNais=document.getElementById('dateNaissance').value, lieu=document.getElementById('lieu').value.trim(), sexe=document.getElementById('sexe').value, photoFile=document.getElementById('photoInput').files[0];
       if(!nom||!dateNais||!lieu||!sexe||!photoFile) return alert('Tous les champs requis');
@@ -486,7 +585,7 @@
         document.getElementById('categoriePreview').value='';
         await refreshLicenceList();
         await refreshCentresList();
-        showCardPreview(licence);
+        if(hasPermission('print')) showCardPreview(licence);
       }catch(err){ alert('Erreur : '+err.message); }
     });
 
@@ -511,27 +610,33 @@
       const tbody=document.querySelector('#licencesTable tbody');
       tbody.innerHTML='';
       for(const l of filtered){
+        let actions = '';
+        if(hasPermission('licences_view')) actions += `<button class="btn btn-sm btn-info view-btn" data-id="${l.id}">👁️</button> `;
+        if(hasPermission('licences_edit')) actions += `<button class="btn btn-sm btn-warning edit-btn" data-id="${l.id}">✏️</button> <button class="btn btn-sm btn-danger delete-btn" data-id="${l.id}">🗑️</button>`;
         const tr=document.createElement('tr');
-        tr.innerHTML=`<td>${l.numero}</td><td>${l.nom}</td><td>${l.categorie||''}</td><td>${l.saison}</td><td>${l.sexe}</td><td><button class="btn btn-sm btn-info view-btn" data-id="${l.id}">👁️</button> <button class="btn btn-sm btn-warning edit-btn" data-id="${l.id}">✏️</button> <button class="btn btn-sm btn-danger delete-btn" data-id="${l.id}">🗑️</button></td>`;
+        tr.innerHTML=`<td>${l.numero}</td><td>${l.nom}</td><td>${l.categorie||''}</td><td>${l.saison}</td><td>${l.sexe}</td><td>${actions}</td>`;
         tbody.appendChild(tr);
       }
       document.querySelectorAll('.view-btn').forEach(btn=>btn.onclick=async()=>{
         const lic=(await loadLicences()).find(l=>l.id===parseInt(btn.dataset.id));
-        if(lic) showCardPreview(lic);
+        if(lic && hasPermission('print')) showCardPreview(lic);
       });
-      document.querySelectorAll('.edit-btn').forEach(btn=>btn.onclick=async()=>{
-        const lic=(await loadLicences()).find(l=>l.id===parseInt(btn.dataset.id));
-        if(lic) openEditModal(lic);
-      });
-      document.querySelectorAll('.delete-btn').forEach(btn=>btn.onclick=async()=>{
-        if(!confirm('Supprimer cette licence ?')) return;
-        await deleteLicence(parseInt(btn.dataset.id));
-        await refreshLicenceList();
-        await refreshCentresList();
-      });
+      if(hasPermission('licences_edit')) {
+        document.querySelectorAll('.edit-btn').forEach(btn=>btn.onclick=async()=>{
+          const lic=(await loadLicences()).find(l=>l.id===parseInt(btn.dataset.id));
+          if(lic) openEditModal(lic);
+        });
+        document.querySelectorAll('.delete-btn').forEach(btn=>btn.onclick=async()=>{
+          if(!confirm('Supprimer cette licence ?')) return;
+          await deleteLicence(parseInt(btn.dataset.id));
+          await refreshLicenceList();
+          await refreshCentresList();
+        });
+      }
     }
 
     async function openEditModal(licence){
+      if(!hasPermission('licences_edit')) return;
       document.getElementById('editLicenceId').value=licence.id;
       document.getElementById('editNom').value=licence.nom;
       document.getElementById('editDateNaissance').value=licence.dateNaissance;
@@ -542,6 +647,7 @@
     }
     document.getElementById('editLicenceForm').addEventListener('submit',async(e)=>{
       e.preventDefault();
+      if(!hasPermission('licences_edit')) return;
       const id=parseInt(document.getElementById('editLicenceId').value);
       const nom=document.getElementById('editNom').value.trim(), dateNais=document.getElementById('editDateNaissance').value, lieu=document.getElementById('editLieu').value.trim(), sexe=document.getElementById('editSexe').value, photoFile=document.getElementById('editPhotoInput').files[0];
       const licences=await loadLicences();
@@ -562,8 +668,9 @@
       await refreshCentresList();
     });
 
-    // Bordereau (pas changé)
+    // Bordereau
     document.getElementById('btnBordereau').addEventListener('click',async()=>{
+      if(!hasPermission('print')) return alert('Permission insuffisante');
       if(!currentCentre) return;
       const licences=await loadLicences();
       const filtered=licences.filter(l=>l.centreId===currentCentre.id && l.saison===currentCentre.saison);
@@ -572,11 +679,11 @@
       const logoHtml=settings.portrait.logoFederal?`<img src="${settings.portrait.logoFederal}" style="max-height:30px;vertical-align:middle;margin-right:10px;">`:'';
       let html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Bordereau ${currentCentre.name}</title><style>body{font-family:'Segoe UI';margin:20px}h2{display:flex;align-items:center;justify-content:center;gap:10px}table{width:100%;border-collapse:collapse;margin-top:10px}th,td{border:1px solid #000;padding:4px 6px;font-size:12px}th{background:#eee}</style></head><body><h2>${logoHtml} Bordereau - ${currentCentre.name} (${currentCentre.saison})</h2><p>Date : ${new Date().toLocaleDateString('fr-FR')}</p><table><thead><tr><th>N°</th><th>Nom</th><th>Né le</th><th>Lieu</th><th>Sexe</th><th>Catégorie</th><th>Saison</th></tr></thead><tbody>`;
       filtered.forEach(l=>html+=`<tr><td>${l.numero}</td><td>${l.nom}</td><td>${l.dateNaissance}</td><td>${l.lieu}</td><td>${l.sexe}</td><td>${l.categorie||''}</td><td>${l.saison}</td></tr>`);
-      html+=`</tbody></table><p style="text-align:center">Généré par IDGes V1.0 By Eniktech (IndexedDB)</p></body></html>`;
+      html+=`</tbody></table><p style="text-align:center">Généré par IDGES V2.0</p></body></html>`;
       const w=window.open('','_blank'); w.document.write(html); w.document.close(); w.print();
     });
 
-    // ----- Fonction UNIQUE de génération de carte (pour aperçu et planche) -----
+    // ----- Fonction UNIQUE de génération de carte -----
     function genererCarteHTML(licence, orientation, settings) {
       const photoHtml = licence.photo ? `<img src="${licence.photo}" class="photo">` : 'Photo';
       const orgLogoHtml = settings.logo ? `<img src="${settings.logo}" class="org-logo-header">` : '';
@@ -605,7 +712,7 @@
           <div class="qr-area" id="${qrId}"></div>
         </div>
         <div class="info-area">${infoLines}</div>
-        <div class="card-footer">Créé le ${licence.dateCreation} · IDGES V2.0 Par Eniktech · Contact : +237672322762</div>
+        <div class="card-footer">Créé le ${licence.dateCreation} · IDGES V2.0 Par Eniktech</div>
       </div>`;
     }
 
@@ -632,16 +739,11 @@
 
     // Planche A4
     async function genererPlancheA4(orientation) {
-      if (!currentCentre) {
-        alert('Aucun centre sélectionné');
-        return;
-      }
+      if(!hasPermission('print')) return alert('Permission insuffisante');
+      if (!currentCentre) { alert('Aucun centre sélectionné'); return; }
       const licences = await loadLicences();
       const filtered = licences.filter(l => l.centreId === currentCentre.id && l.saison === currentCentre.saison);
-      if (!filtered.length) {
-        alert('Aucune licence pour ce centre');
-        return;
-      }
+      if (!filtered.length) { alert('Aucune licence pour ce centre'); return; }
       const allSettings = await loadSettings();
       const settings = orientation === 'portrait' ? allSettings.portrait : allSettings.landscape;
       
@@ -651,9 +753,7 @@
         const l = filtered[idx];
         const cardHtml = genererCarteHTML(l, orientation, settings);
         const match = cardHtml.match(/id="([^"]+)"/);
-        if (match) {
-          qrInfos.push({ id: match[1], licence: l });
-        }
+        if (match) qrInfos.push({ id: match[1], licence: l });
         cardsHtml += cardHtml;
       }
       
@@ -716,19 +816,15 @@
         };
       <\/script>
       </body></html>`;
-      
-      try {
-        await printHTML(plancheHtml);
-      } catch(e) {
-        alert("Erreur lors de l'impression : " + e.message);
-      }
+      try { await printHTML(plancheHtml); } catch(e) { alert("Erreur impression : " + e.message); }
     }
 
     document.getElementById('btnPlancheA4Portrait').onclick = () => genererPlancheA4('portrait');
     document.getElementById('btnPlancheA4Landscape').onclick = () => genererPlancheA4('landscape');
 
-    // Aperçu individuel avec impression via iframe
+    // Aperçu individuel
     async function showCardPreview(licence) {
+      if(!hasPermission('print')) return;
       const allSettings = await loadSettings();
       const previewDiv = document.getElementById('cardPreview');
       const orientationSelect = document.getElementById('orientationSelect');
@@ -772,11 +868,7 @@
         const qrId = `qr-print-${Date.now()}`;
         let finalHtml = cardHtml.replace(/id="([^"]+)"/, `id="${qrId}"`);
         const printDoc = `<!DOCTYPE html><html><head><title>Licence ${licence.numero}</title><style>${document.querySelector('style').innerHTML}@page{size:A4 ${chosen === 'landscape' ? 'landscape' : 'portrait'};margin:20mm}body{display:flex;justify-content:center;align-items:center;height:100vh;margin:0}.print-area{width:${chosen === 'landscape' ? '85mm' : '55mm'};height:${chosen === 'landscape' ? '55mm' : '85mm'}}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}</style><script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"><\/script><script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"><\/script></head><body><div class="print-area">${finalHtml}</div><script>new QRCode(document.getElementById('${qrId}'), {text: JSON.stringify({numero: '${licence.numero}', nom: '${licence.nom}', dateNaissance: '${licence.dateNaissance}', lieu: '${licence.lieu}', sexe: '${licence.sexe}', centreName: '${licence.centreName}', saison: '${licence.saison}', categorie: '${licence.categorie}', hash: '${hashObj({numero: licence.numero, nom: licence.nom, dateNaissance: licence.dateNaissance, lieu: licence.lieu, sexe: licence.sexe, centreName: licence.centreName, saison: licence.saison, categorie: licence.categorie})}'}), width: 100, height: 100});<\/script></body></html>`;
-        try {
-          await printHTML(printDoc);
-        } catch(e) {
-          alert("Erreur impression : " + e.message);
-        }
+        try { await printHTML(printDoc); } catch(e) { alert("Erreur impression : " + e.message); }
       };
       new bootstrap.Modal(document.getElementById('cardModal')).show();
     }
@@ -784,6 +876,7 @@
     // ---------- Import CSV ----------
     let csvData = [];
     document.getElementById('csvFile').addEventListener('change', function(e) {
+      if(!hasPermission('import')) return;
       const file = e.target.files[0];
       if (!file) return;
       const reader = new FileReader();
@@ -816,14 +909,9 @@
     });
 
     document.getElementById('btnGenerateAll').addEventListener('click', async () => {
-      if (!currentCentre) {
-        alert('Sélectionnez un centre d\'abord');
-        return;
-      }
-      if (csvData.length === 0) {
-        alert('Aucune donnée CSV chargée');
-        return;
-      }
+      if(!hasPermission('import')) return alert('Permission insuffisante');
+      if (!currentCentre) { alert('Sélectionnez un centre'); return; }
+      if (csvData.length === 0) { alert('Aucune donnée CSV chargée'); return; }
       let created = 0;
       for (const row of csvData) {
         try {
@@ -845,7 +933,7 @@
       await refreshCentresList();
     });
 
-    // ---------- Paramètres UI (inchangé) ----------
+    // ---------- Paramètres UI (inchangé mais vérifie permission) ----------
     async function loadUISettings() {
       const settings = await loadSettings();
       document.getElementById('portraitHeaderText').value = settings.portrait.headerText || '';
@@ -934,12 +1022,11 @@
       const cardHtml = genererCarteHTML(dummyLicence, orient, { headerText, extraText, logo, logoFederal: fed, bgType, bgColor, bgImage: bg });
       previewDiv.innerHTML = cardHtml;
       const match = cardHtml.match(/id="([^"]+)"/);
-      if (match) {
-        new QRCode(document.getElementById(match[1]), { text: 'APERÇU', width: 80, height: 80 });
-      }
+      if (match) new QRCode(document.getElementById(match[1]), { text: 'APERÇU', width: 80, height: 80 });
     }
 
     async function saveOrientationSettings(orient) {
+      if(!hasPermission('settings')) return alert('Permission insuffisante');
       const headerText = document.getElementById(`${orient}HeaderText`).value.trim();
       const extraText = document.getElementById(`${orient}ExtraText`).value.trim();
       const bgType = document.querySelector(`input[name="${orient}BgType"]:checked`).value;
@@ -960,6 +1047,7 @@
     }
 
     async function resetOrientationSettings(orient) {
+      if(!hasPermission('settings')) return alert('Permission insuffisante');
       const defaultSettings = { headerText: 'FÉDÉRATION SPORTIVE', extraText: '', logo: null, logoFederal: null, bgType: 'color', bgColor: '#ffffff', bgImage: null };
       if (orient === 'portrait') await savePortraitSettings(defaultSettings);
       else await saveLandscapeSettings(defaultSettings);
@@ -985,6 +1073,7 @@
     });
     document.querySelectorAll('.btn-delete-logo').forEach(btn => {
       btn.addEventListener('click', async () => {
+        if(!hasPermission('settings')) return;
         const orient = btn.dataset.orient;
         const current = (await loadSettings())[orient];
         current.logo = null;
@@ -996,6 +1085,7 @@
     });
     document.querySelectorAll('.btn-delete-logo-federal').forEach(btn => {
       btn.addEventListener('click', async () => {
+        if(!hasPermission('settings')) return;
         const orient = btn.dataset.orient;
         const current = (await loadSettings())[orient];
         current.logoFederal = null;
@@ -1030,7 +1120,7 @@
       if (el) el.addEventListener('input', () => updateSettingsPreview('landscape'));
     });
 
-    // Export / Import (identique)
+    // Export / Import (inchangé)
     async function getAllData() {
       const settings = await loadSettings();
       return { users: await loadUsers(), licences: await loadLicences(), centres: await loadCentres(), counter: (await getNextOrder()) - 1, settings };
@@ -1077,112 +1167,191 @@
     document.getElementById('importSettingsFile').onchange = e => { const f = e.target.files[0]; if (f) { const r = new FileReader(); r.onload = ev => importSettingsContent = ev.target.result; r.readAsText(f); } };
     document.getElementById('btnImportSettingsOnly').onclick = async () => { if (!importSettingsContent) return alert('Choisissez un fichier'); if (!confirm('Remplacer la configuration ?')) return; try { const ns = JSON.parse(importSettingsContent); if (!ns.portrait || !ns.landscape) throw new Error(); await savePortraitSettings(ns.portrait); await saveLandscapeSettings(ns.landscape); alert('Paramètres importés'); await loadUISettings(); } catch (e) { alert('Erreur'); } };
 
-    // Users
-    async function refreshUserList() {
+    // ---------- Gestion utilisateurs avec permissions ----------
+    function permsToCheckboxes(perms) {
+      document.getElementById('perm_centres_view').checked = perms.centres_view || false;
+      document.getElementById('perm_centres_edit').checked = perms.centres_edit || false;
+      document.getElementById('perm_licences_view').checked = perms.licences_view || false;
+      document.getElementById('perm_licences_edit').checked = perms.licences_edit || false;
+      document.getElementById('perm_import').checked = perms.import || false;
+      document.getElementById('perm_print').checked = perms.print || false;
+      document.getElementById('perm_settings').checked = perms.settings || false;
+      document.getElementById('perm_users').checked = perms.users || false;
+    }
+    function checkboxesToPerms() {
+      return {
+        centres_view: document.getElementById('perm_centres_view').checked,
+        centres_edit: document.getElementById('perm_centres_edit').checked,
+        licences_view: document.getElementById('perm_licences_view').checked,
+        licences_edit: document.getElementById('perm_licences_edit').checked,
+        import: document.getElementById('perm_import').checked,
+        print: document.getElementById('perm_print').checked,
+        settings: document.getElementById('perm_settings').checked,
+        users: document.getElementById('perm_users').checked
+      };
+    }
+    async function refreshUsersList() {
+      if(!hasPermission('users')) return;
       const users = await loadUsers();
-      const tbody = document.querySelector('#usersTable tbody'); tbody.innerHTML = '';
-      for (const u of users) {
+      const tbody = document.querySelector('#usersTable tbody');
+      tbody.innerHTML = '';
+      for(const u of users) {
+        const perms = u.permissions || {};
+        const permSummary = Object.entries(perms).filter(([k,v])=>v).map(([k])=>k.substring(0,3)).join(', ');
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${u.username}</td><td>${u.role === 'admin' ? 'Admin' : 'Utilisateur'}</td><td><button class="btn btn-sm btn-danger delete-user-btn" data-id="${u.id}" data-username="${u.username}">🗑️</button></td>`;
+        tr.innerHTML = `<td>${u.username}</td><td>${permSummary || 'Aucune'}</td>
+        <td><button class="btn btn-sm btn-warning edit-user-btn" data-id="${u.id}" data-username="${u.username}">✏️</button>
+        ${u.username !== currentUser.username ? `<button class="btn btn-sm btn-danger delete-user-btn" data-id="${u.id}" data-username="${u.username}">🗑️</button>` : ''}</td>`;
         tbody.appendChild(tr);
       }
-      document.querySelectorAll('.delete-user-btn').forEach(btn => btn.onclick = async () => {
-        const id = parseInt(btn.dataset.id), name = btn.dataset.username;
-        if (currentUser?.username === name) return alert('Vous ne pouvez pas supprimer votre propre compte');
-        const usersList = await loadUsers();
-        if (usersList.length <= 1) return alert('Dernier utilisateur');
-        if (!confirm(`Supprimer ${name} ?`)) return;
-        await deleteUser(id);
-        await refreshUserList();
+      document.querySelectorAll('.edit-user-btn').forEach(btn => {
+        btn.onclick = async () => {
+          const userId = parseInt(btn.dataset.id);
+          const usersList = await loadUsers();
+          const user = usersList.find(u => u.id === userId);
+          if(user) {
+            document.getElementById('editUserId').value = user.id;
+            document.getElementById('userUsername').value = user.username;
+            document.getElementById('userPassword').value = '';
+            permsToCheckboxes(user.permissions || {});
+          }
+        };
+      });
+      document.querySelectorAll('.delete-user-btn').forEach(btn => {
+        btn.onclick = async () => {
+          if(!confirm(`Supprimer l'utilisateur ${btn.dataset.username} ?`)) return;
+          await deleteUser(parseInt(btn.dataset.id));
+          await refreshUsersList();
+        };
       });
     }
-    document.getElementById('addUserForm').addEventListener('submit', async (e) => {
+    document.getElementById('userForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const username = document.getElementById('newUsername').value.trim(), pwd = document.getElementById('newPassword').value, role = document.getElementById('newRole').value;
-      if (!username || !pwd) return alert('Complétez');
+      if(!hasPermission('users')) return alert('Permission insuffisante');
+      const userId = document.getElementById('editUserId').value;
+      const username = document.getElementById('userUsername').value.trim();
+      const password = document.getElementById('userPassword').value;
+      const perms = checkboxesToPerms();
+      if(!username) return alert('Nom requis');
       const users = await loadUsers();
-      if (users.find(u => u.username === username)) return alert('Existe déjà');
-      await saveUser({ username, passwordHash: hashPwd(pwd), role });
-      document.getElementById('addUserForm').reset();
-      await refreshUserList();
+      if(userId === '') { // création
+        if(users.find(u => u.username === username)) return alert('Nom déjà utilisé');
+        if(!password) return alert('Mot de passe requis pour nouvelle création');
+        await saveUser({ username, passwordHash: hashPwd(password), permissions: perms });
+      } else { // modification
+        const existing = users.find(u => u.id === parseInt(userId));
+        if(!existing) return alert('Utilisateur introuvable');
+        if(existing.username !== username && users.find(u => u.username === username)) return alert('Nom déjà utilisé');
+        existing.username = username;
+        if(password) existing.passwordHash = hashPwd(password);
+        existing.permissions = perms;
+        await updateUser(existing);
+        if(currentUser.id === existing.id) {
+          currentUser.username = username;
+          currentUserDisplay.textContent = `👤 ${username}`;
+          currentPermissions = perms;
+          applyPermissionsUI();
+        }
+      }
+      document.getElementById('editUserId').value = '';
+      document.getElementById('userUsername').value = '';
+      document.getElementById('userPassword').value = '';
+      permsToCheckboxes({}); // reset
+      await refreshUsersList();
     });
+    document.getElementById('cancelUserEdit').onclick = () => {
+      document.getElementById('editUserId').value = '';
+      document.getElementById('userUsername').value = '';
+      document.getElementById('userPassword').value = '';
+      permsToCheckboxes({});
+    };
 
     // Auth
     async function initAdmin() {
       const users = await loadUsers();
-      if (!users.some(u => u.username === 'admin')) await saveUser({ username: 'admin', passwordHash: hashPwd('idges2025'), role: 'admin' });
+      if(!users.some(u => u.username === 'admin')) {
+        await saveUser({
+          username: 'admin',
+          passwordHash: hashPwd('idges2025'),
+          permissions: {
+            centres_view: true, centres_edit: true,
+            licences_view: true, licences_edit: true,
+            import: true, print: true,
+            settings: true, users: true
+          }
+        });
+      }
     }
     async function login(username, password) {
       const users = await loadUsers();
       const user = users.find(u => u.username === username && u.passwordHash === hashPwd(password));
-      if (user) {
-        currentUser = { id: user.id, username: user.username, role: user.role };
+      if(user){
+        currentUser = { id: user.id, username: user.username };
+        currentPermissions = user.permissions || {};
         sessionStorage.setItem('loggedUser', JSON.stringify(currentUser));
+        sessionStorage.setItem('currentPermissions', JSON.stringify(currentPermissions));
         const saved = sessionStorage.getItem('currentCentre');
-        if (saved) currentCentre = JSON.parse(saved);
+        if(saved) currentCentre = JSON.parse(saved);
         await showApp();
         return true;
       }
       return false;
     }
-    function logout() {
+    function logout(){
       sessionStorage.removeItem('loggedUser');
+      sessionStorage.removeItem('currentPermissions');
       sessionStorage.removeItem('currentCentre');
-      currentUser = null; currentCentre = null;
-      loginPage.style.display = 'flex';
-      appContent.style.display = 'none';
+      currentUser=null; currentCentre=null; currentPermissions=null;
+      loginPage.style.display='flex';
+      appContent.style.display='none';
     }
-    async function showApp() {
-      loginPage.style.display = 'none';
-      appContent.style.display = 'block';
-      if (currentUser) {
-        currentUserDisplay.textContent = `👤 ${currentUser.username}`;
-        usersTabNav.style.display = currentUser.role === 'admin' ? 'block' : 'none';
+    async function showApp(){
+      loginPage.style.display='none';
+      appContent.style.display='block';
+      if(currentUser){
+        currentUserDisplay.textContent=`👤 ${currentUser.username}`;
+        applyPermissionsUI();
       }
       await refreshCentresList();
       await refreshLicenceList();
-      if (currentUser?.role === 'admin') await refreshUserList();
+      if(hasPermission('users')) await refreshUsersList();
       switchTab('centresTab');
       updateCategoriePreview();
       await loadUISettings();
     }
-    function switchTab(panelId) {
-      document.querySelectorAll('#mainTabs .nav-link').forEach(l => l.classList.remove('active'));
-      document.querySelectorAll('.tab-pane').forEach(p => { p.classList.remove('show', 'active'); p.style.display = 'none'; });
-      const activeLink = document.querySelector(`#mainTabs .nav-link[data-panel="${panelId}"]`);
-      if (activeLink) activeLink.classList.add('active');
-      const activePane = document.querySelector(`.tab-pane[data-panel="${panelId}"]`);
-      if (activePane) { activePane.classList.add('show', 'active'); activePane.style.display = 'block'; }
+    function switchTab(panelId){
+      document.querySelectorAll('#mainTabs .nav-link').forEach(l=>l.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p=>{p.classList.remove('show','active'); p.style.display='none';});
+      const activeLink=document.querySelector(`#mainTabs .nav-link[data-panel="${panelId}"]`);
+      if(activeLink) activeLink.classList.add('active');
+      const activePane=document.querySelector(`.tab-pane[data-panel="${panelId}"]`);
+      if(activePane){activePane.classList.add('show','active'); activePane.style.display='block';}
     }
-    document.querySelectorAll('#mainTabs .nav-link[data-panel]').forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); switchTab(link.dataset.panel); }));
+    document.querySelectorAll('#mainTabs .nav-link[data-panel]').forEach(link=>link.addEventListener('click',(e)=>{e.preventDefault(); switchTab(link.dataset.panel);}));
 
     // Initialisation
     (async function () {
       await openDB();
       await initAdmin();
       const savedUser = sessionStorage.getItem('loggedUser');
-      if (savedUser) {
+      const savedPerms = sessionStorage.getItem('currentPermissions');
+      if(savedUser && savedPerms){
         currentUser = JSON.parse(savedUser);
+        currentPermissions = JSON.parse(savedPerms);
         const savedCentre = sessionStorage.getItem('currentCentre');
-        if (savedCentre) {
-          try {
-            currentCentre = JSON.parse(savedCentre);
-            // S'assurer que l'objet a les bonnes propriétés
-            if (!currentCentre.name) currentCentre.name = savedCentre.name || '?';
-          } catch(e) { currentCentre = null; }
-        }
+        if(savedCentre) currentCentre = JSON.parse(savedCentre);
         await showApp();
       } else {
-        loginPage.style.display = 'flex';
-        appContent.style.display = 'none';
+        loginPage.style.display='flex';
+        appContent.style.display='none';
       }
-      document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      document.getElementById('loginForm').addEventListener('submit',async(e)=>{
         e.preventDefault();
-        const ok = await login(document.getElementById('username').value.trim(), document.getElementById('password').value);
-        if (!ok) alert('Identifiants incorrects');
+        const ok=await login(document.getElementById('username').value.trim(),document.getElementById('password').value);
+        if(!ok) alert('Identifiants incorrects');
       });
-      document.getElementById('logoutBtn').addEventListener('click', () => { if (confirm('Déconnexion ?')) logout(); });
-      window.updateCentreDisplay = async function () { if (currentCentre) sessionStorage.setItem('currentCentre', JSON.stringify(currentCentre)); else sessionStorage.removeItem('currentCentre'); await updateCentreDisplay(); };
+      document.getElementById('logoutBtn').addEventListener('click',()=>{if(confirm('Déconnexion ?')) logout();});
+      window.updateCentreDisplay=async function(){ if(currentCentre) sessionStorage.setItem('currentCentre',JSON.stringify(currentCentre)); else sessionStorage.removeItem('currentCentre'); await updateCentreDisplay(); };
     })();
   })();
 </script>
