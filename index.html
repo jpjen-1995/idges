@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IDGES V2.0 - Gestion des licences sportives </title>
+  <title>IDGES V2.0 - Gestion des licences sportives</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   <style>
-    /* ========== STYLES (inchangés mais complets) ========== */
+    /* ========== STYLES  ========== */
     #loginPage { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     .login-card { width: 100%; max-width: 400px; border-radius: 1rem; box-shadow: 0 10px 25px rgba(0,0,0,0.3); background: rgba(255,255,255,0.95); padding: 2rem; }
     .login-logo { font-size: 2.5rem; font-weight: bold; color: #1e3c72; text-align: center; margin-bottom: 0.5rem; }
@@ -19,33 +19,26 @@
     /* Carte générique */
     .card-preview { width: 55mm; height: 85mm; border: 2px solid #000; padding: 4mm 2mm 2mm 2mm; margin: 0 auto; display: flex; flex-direction: column; justify-content: space-between; background-size: cover; background-position: center; background-repeat: no-repeat; color: #000; box-shadow: 0 2px 8px rgba(0,0,0,0.2); box-sizing: border-box; border-radius: 4mm; overflow: hidden; }
     .card-preview.landscape { width: 85mm; height: 55mm; flex-direction: row; flex-wrap: wrap; align-content: flex-start; padding: 4mm 2mm 2mm 2mm; }
-    
     .card-top-header { display: flex; align-items: center; justify-content: center; margin-bottom: 2mm; width: 100%; }
     .extra-text { font-size: 6px; text-align: center; flex: 1; }
     .federal-logo-header { max-height: 6mm; max-width: 10mm; object-fit: contain; margin-right: 2mm; }
     .card-org-line { display: flex; align-items: center; justify-content: center; margin-bottom: 1mm; width: 100%; }
     .org-logo-header { max-height: 6mm; max-width: 10mm; object-fit: contain; margin-right: 1mm; }
     .card-header-custom { font-weight: bold; font-size: 9px; text-align: center; }
-    
     .photo-qr-row { display: flex; align-items: center; justify-content: center; gap: 2mm; margin: 3mm 0 2mm 0; }
     .card-preview.landscape .photo-qr-row { width: 45%; justify-content: space-between; gap: 1mm; flex-shrink: 0; align-items: center; }
-    
     .photo-area { width: 24mm; height: 30mm; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #eee; flex-shrink: 0; border-radius: 2mm; }
     .card-preview.landscape .photo-area { width: 20mm; height: 26mm; }
     .photo-area img.photo { width: 100%; height: 100%; object-fit: cover; }
-    
     .qr-area { width: 18mm; height: 18mm; flex-shrink: 0; }
     .card-preview.landscape .qr-area { width: 14mm; height: 14mm; }
     .qr-area canvas, .qr-area img { width: 100% !important; height: 100% !important; }
-    
     .info-area { flex: 1; padding: 2mm 1mm 0 1mm; font-size: 8px; line-height: 1.4; display: flex; flex-direction: column; justify-content: center; }
     .card-preview.landscape .info-area { width: 53%; font-size: 7px; margin-left: 2mm; }
     .info-area strong { font-weight: 600; }
     .info-area .field { margin-bottom: 0.3mm; font-size: 8px; }
     .card-preview.landscape .info-area .field { font-size: 7px; }
-    
     .card-footer { font-size: 5px; text-align: center; margin-top: 2mm; border-top: 0.5px solid #aaa; padding-top: 0.5mm; width: 100%; }
-    
     @media print {
       body * { visibility: hidden; }
       .print-area, .print-area * { visibility: visible; }
@@ -54,7 +47,6 @@
       .no-print { display: none !important; }
       * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     }
-    
     .tab-content { background: white; padding: 20px; border: 1px solid #dee2e6; border-top: none; border-radius: 0 0 5px 5px; }
     .nav-tabs .nav-link { cursor: pointer; }
     .nav-tabs .nav-link.active { background-color: white; border-bottom-color: transparent; }
@@ -62,11 +54,7 @@
     .settings-block { margin-bottom: 40px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; background: #fefefe; }
     .settings-block h4 { margin-bottom: 20px; background: #e9ecef; padding: 10px; border-radius: 5px; }
     .preview-container { background: #f8f9fa; padding: 15px; border-radius: 5px; text-align: center; }
-    
-    /* iframe d'impression invisible */
     .print-iframe { position: absolute; width: 0; height: 0; border: 0; visibility: hidden; }
-    
-    /* Permissions checkboxes */
     .perm-group { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0; }
     .perm-group label { margin-right: 15px; font-weight: normal; }
   </style>
@@ -77,13 +65,13 @@
 <div id="loginPage">
   <div class="login-card">
     <div class="login-logo">⚽ IDGES V2.0</div>
-    <div class="login-subtitle">Par Eniktech<br>Tous droits reservés</div>
+    <div class="login-subtitle">Par Eniktech<br></div>
     <form id="loginForm">
-      <div class="mb-3"><label for="username">Nom d'utilisateur</label><input type="text" class="form-control" id="username" placeholder="Identifiant" required></div>
-      <div class="mb-3"><label for="password">Mot de passe</label><input type="password" class="form-control" id="password" placeholder="Mot de passe" required></div>
+      <div class="mb-3"><label for="username">Nom d'utilisateur</label><input type="text" class="form-control" id="username" placeholder="admin" required></div>
+      <div class="mb-3"><label for="password">Mot de passe</label><input type="password" class="form-control" id="password" required></div>
       <button type="submit" class="btn btn-primary w-100">Se connecter</button>
     </form>
-    <p class="text-muted small mt-3 text-center"></p>
+    <p class="text-muted small mt-3 text-center">Tous droits reservés</p>
   </div>
 </div>
 
@@ -154,10 +142,10 @@
         <h5>Licences du centre <span id="listCentreName"></span> <small>(<span id="licenceCount">0</span>)</small></h5>
         <div class="d-flex gap-2 mb-2">
           <button class="btn btn-outline-primary btn-sm" id="btnBordereau">📄 Bordereau</button>
-          <button class="btn btn-outline-success btn-sm" id="btnPlancheA4Portrait">🖨️ Planche A4 (Portrait)</button>
-          <button class="btn btn-outline-success btn-sm" id="btnPlancheA4Landscape">🖨️ Planche A4 (Paysage)</button>
+          <button class="btn btn-outline-success btn-sm" id="btnPlancheA4Portrait">🖨️ Inprimer en A4 (Portrait)</button>
+          <button class="btn btn-outline-success btn-sm" id="btnPlancheA4Landscape">🖨️ Imprimer en A4 (Paysage)</button>
         </div>
-        <div class="table-responsive"><table class="table table-striped" id="licencesTable"><thead class="table-dark"><tr><th>N° Licence</th><th>Nom</th><th>Catégorie</th><th>Saison</th><th>Sexe</th><th>Actions</th></tr></thead><tbody></tbody><table></div>
+        <div class="table-responsive"><table class="table table-striped" id="licencesTable"><thead class="table-dark"><tr><th>N° Licence</th><th>Nom</th><th>Catégorie</th><th>Saison</th><th>Sexe</th><th>Actions</th></tr></thead><tbody></tbody></table></div>
       </div>
 
       <!-- IMPORT CSV -->
@@ -214,10 +202,10 @@
           <hr><h5>Aperçu (Paysage)</h5><div class="preview-container"><div class="card-preview landscape" id="landscapePreview"></div></div>
         </div>
         <hr>
-        <h5>💾 Gestion des données (séparée des paramètres)</h5>
-        <div class="row"><div class="col-md-4"><button class="btn btn-outline-info w-100" id="btnExportDataOnly">📤 Exporter les données</button></div><div class="col-md-4"><label class="form-label">📥 Importer des données</label><input type="file" id="importDataOnlyFile" accept=".json" class="form-control"><button class="btn btn-outline-warning mt-2 w-100" id="btnImportDataOnly">Remplacer les données</button></div><div class="col-md-4"><button class="btn btn-outline-danger w-100" id="btnClearData">🗑️ Effacer toutes les données</button></div></div>
-        <hr><h5>Sauvegarde complète</h5><div class="row"><div class="col-md-6"><button class="btn btn-info w-100" id="btnExportFull">📤 Exporter tout</button></div><div class="col-md-6"><label class="form-label">📥 Importer une sauvegarde</label><input type="file" id="importFullFile" accept=".json" class="form-control"><button class="btn btn-warning mt-2 w-100" id="btnImportFull">Restaurer</button></div></div>
-        <hr><h5>⚙️ Configuration seule</h5><div class="row"><div class="col-md-4"><button class="btn btn-outline-secondary w-100" id="btnExportSettingsOnly">📤 Exporter les paramètres</button></div><div class="col-md-8"><label class="form-label">📥 Importer des paramètres</label><input type="file" id="importSettingsFile" accept=".json" class="form-control"><button class="btn btn-outline-secondary mt-2 w-100" id="btnImportSettingsOnly">Remplacer les paramètres</button></div></div>
+        <h5>💾 Gestion des données</h5>
+        <div class="row"><div class="col-md-4"><button class="btn btn-outline-info w-100" id="btnExportDataOnly">📤 Exporter les données</button></div><div class="col-md-4"><label>📥 Importer des données</label><input type="file" id="importDataOnlyFile" accept=".json" class="form-control"><button class="btn btn-outline-warning mt-2 w-100" id="btnImportDataOnly">Remplacer les données</button></div><div class="col-md-4"><button class="btn btn-outline-danger w-100" id="btnClearData">🗑️ Effacer toutes les données</button></div></div>
+        <hr><h5>Sauvegarde complète</h5><div class="row"><div class="col-md-6"><button class="btn btn-info w-100" id="btnExportFull">📤 Exporter tout</button></div><div class="col-md-6"><label>📥 Importer une sauvegarde</label><input type="file" id="importFullFile" accept=".json" class="form-control"><button class="btn btn-warning mt-2 w-100" id="btnImportFull">Restaurer</button></div></div>
+        <hr><h5>⚙️ Configuration seule</h5><div class="row"><div class="col-md-4"><button class="btn btn-outline-secondary w-100" id="btnExportSettingsOnly">📤 Exporter les paramètres</button></div><div class="col-md-8"><label>📥 Importer des paramètres</label><input type="file" id="importSettingsFile" accept=".json" class="form-control"><button class="btn btn-outline-secondary mt-2 w-100" id="btnImportSettingsOnly">Remplacer les paramètres</button></div></div>
       </div>
 
       <!-- UTILISATEURS avec permissions -->
@@ -235,11 +223,11 @@
                   <div class="mb-2"><label>Permissions</label>
                     <div class="perm-group">
                       <label><input type="checkbox" id="perm_centres_view"> Voir centres</label>
-                      <label><input type="checkbox" id="perm_centres_edit"> Gérer centres (ajout/modif/suppr)</label>
+                      <label><input type="checkbox" id="perm_centres_edit"> Gérer centres</label>
                       <label><input type="checkbox" id="perm_licences_view"> Voir licences</label>
-                      <label><input type="checkbox" id="perm_licences_edit"> Gérer licences (création/modif/suppr)</label>
+                      <label><input type="checkbox" id="perm_licences_edit"> Gérer licences</label>
                       <label><input type="checkbox" id="perm_import"> Importer CSV</label>
-                      <label><input type="checkbox" id="perm_print"> Imprimer (bordereau/planches)</label>
+                      <label><input type="checkbox" id="perm_print"> Imprimer</label>
                       <label><input type="checkbox" id="perm_settings"> Modifier paramètres</label>
                       <label><input type="checkbox" id="perm_users"> Gérer utilisateurs</label>
                     </div>
@@ -270,13 +258,12 @@
   <div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Modifier la licence</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><form id="editLicenceForm" class="row g-3" novalidate><input type="hidden" id="editLicenceId"><div class="col-md-4"><label>Nom complet</label><input type="text" class="form-control" id="editNom" required></div><div class="col-md-3"><label>Date de naissance</label><input type="date" class="form-control" id="editDateNaissance" required></div><div class="col-md-3"><label>Lieu</label><input type="text" class="form-control" id="editLieu" required></div><div class="col-md-2"><label>Sexe</label><select class="form-select" id="editSexe" required><option value="M">M</option><option value="F">F</option></select></div><div class="col-md-4"><label>Nouvelle photo (optionnel)</label><input type="file" class="form-control" id="editPhotoInput" accept="image/*"></div><div class="col-12"><button type="submit" class="btn btn-primary">Enregistrer</button><button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal">Annuler</button></div></form></div></div></div>
 </div>
 
-<!-- iframe invisible pour l'impression -->
 <iframe id="printFrame" class="print-iframe"></iframe>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
   (function(){
-    // ---------- IndexedDB (version 3 pour ajouter permissions) ----------
+    // ---------- IndexedDB ----------
     const DB_NAME = 'IDGesDB';
     const DB_VERSION = 3;
     let db = null;
@@ -298,12 +285,9 @@
             store.createIndex('centre_saison', ['centreId', 'saison']);
           }
           if (!db.objectStoreNames.contains('users')) {
-            const store = db.createObjectStore('users', { keyPath: 'id', autoIncrement: true });
-            store.createIndex('username', 'username', { unique: true });
+            db.createObjectStore('users', { keyPath: 'id', autoIncrement: true });
           } else {
-            // Migration : ajouter champ permissions si absent
-            const store = e.target.transaction.objectStore('users');
-            if (!store.indexNames.contains('username')) store.createIndex('username', 'username', { unique: true });
+            // Migration : ajout éventuel de permissions
           }
           if (!db.objectStoreNames.contains('settings')) db.createObjectStore('settings', { keyPath: 'key' });
           if (!db.objectStoreNames.contains('counter')) db.createObjectStore('counter', { keyPath: 'id' });
@@ -333,7 +317,8 @@
     async function loadUsers() { 
       const s=await getStore('users'); 
       const users = await new Promise(r=>s.getAll().onsuccess=e=>r(e.target.result));
-      // Migration : ajouter permissions par défaut pour les anciens comptes
+      // Migration : ajout permissions par défaut pour les anciens comptes
+      let modified = false;
       for(let u of users) {
         if(!u.permissions) {
           if(u.role === 'admin') {
@@ -351,7 +336,13 @@
               settings: false, users: false
             };
           }
-          await updateUser(u);
+          modified = true;
+        }
+      }
+      if(modified) {
+        const sw = await getStore('users','readwrite');
+        for(let u of users) {
+          await new Promise(r=>sw.put(u).onsuccess=r);
         }
       }
       return users;
@@ -360,7 +351,7 @@
     async function updateUser(u) { const s=await getStore('users','readwrite'); return new Promise(r=>s.put(u).onsuccess=e=>r(e.target.result)); }
     async function deleteUser(id) { const s=await getStore('users','readwrite'); return new Promise(r=>s.delete(id).onsuccess=r); }
 
-    // Settings (double config)
+    // Settings
     async function loadSettings() {
       const s=await getStore('settings');
       return new Promise(r=>{
@@ -409,7 +400,15 @@
       const init=mots.length===1 ? mots[0].substring(0,3).toUpperCase() : mots.map(w=>w[0]).join('').toUpperCase().slice(0,5);
       return `LDHM${year}${init}${String(order).padStart(4,'0')}${sexe}`;
     }
-    async function fileToDataURL(file) { return new Promise(r=>{let fr=new FileReader(); fr.onload=()=>r(fr.result); fr.readAsDataURL(file);}); }
+    async function fileToDataURL(file) {
+      return new Promise((resolve, reject) => {
+        if (!file) reject(new Error('Aucun fichier'));
+        const fr = new FileReader();
+        fr.onload = () => resolve(fr.result);
+        fr.onerror = () => reject(new Error('Erreur lecture fichier'));
+        fr.readAsDataURL(file);
+      });
+    }
 
     // Variables globales
     let currentUser=null;
@@ -422,42 +421,30 @@
     const usersTabNav=document.getElementById('usersTabNav');
     const printFrame = document.getElementById('printFrame');
 
-    // Vérification des permissions
     function hasPermission(perm) {
       return currentPermissions && currentPermissions[perm] === true;
     }
 
-    // Appliquer les restrictions d'interface selon permissions
     function applyPermissionsUI() {
-      // Centres
       const btnAddCentre = document.getElementById('btnAddCentre');
       if(btnAddCentre) btnAddCentre.style.display = hasPermission('centres_edit') ? 'inline-block' : 'none';
-      // Renommer/supprimer centres seront gérés dans les boutons dynamiques
-      // Licences
       const btnGenerateLicence = document.getElementById('btnGenerateLicence');
       if(btnGenerateLicence) btnGenerateLicence.disabled = !hasPermission('licences_edit');
       const licenceFormInputs = document.querySelectorAll('#licenceForm input, #licenceForm select');
       licenceFormInputs.forEach(inp => inp.disabled = !hasPermission('licences_edit'));
-      // Import
       const importTab = document.querySelector('[data-panel="importTab"]');
       if(importTab) importTab.style.display = hasPermission('import') ? 'block' : 'none';
-      // Paramètres
       const settingsTab = document.querySelector('[data-panel="settingsTab"]');
       if(settingsTab) settingsTab.style.display = hasPermission('settings') ? 'block' : 'none';
-      // Utilisateurs (onglet)
       usersTabNav.style.display = hasPermission('users') ? 'block' : 'none';
-      // Impression
       const btnBordereau = document.getElementById('btnBordereau');
       const btnPlanchePortrait = document.getElementById('btnPlancheA4Portrait');
       const btnPlancheLandscape = document.getElementById('btnPlancheA4Landscape');
       if(btnBordereau) btnBordereau.style.display = hasPermission('print') ? 'inline-block' : 'none';
       if(btnPlanchePortrait) btnPlanchePortrait.style.display = hasPermission('print') ? 'inline-block' : 'none';
       if(btnPlancheLandscape) btnPlancheLandscape.style.display = hasPermission('print') ? 'inline-block' : 'none';
-      // Exporter/Importer données (toujours accessible ? mais on peut restreindre)
-      // On laisse accessible à tous par défaut, mais on peut ajouter une permission si besoin.
     }
 
-    // Centre display
     async function updateCentreDisplay() {
       if(currentCentre && currentCentre.name){
         currentCenterDisplay.innerHTML=`🏟️ <strong>${currentCentre.name}</strong> (${currentCentre.saison})`;
@@ -476,7 +463,6 @@
       }
     }
 
-    // Rafraîchir centres (avec contrôles permissions sur les boutons)
     async function refreshCentresList() {
       const centres=await loadCentres();
       const licences=await loadLicences();
@@ -566,34 +552,67 @@
     }
     document.getElementById('dateNaissance').addEventListener('input',updateCategoriePreview);
 
-    // Create licence
-    document.getElementById('licenceForm').addEventListener('submit',async(e)=>{
+    // ----- FORMULAIRE LICENCE CORRIGÉ (plus robuste) -----
+    document.getElementById('licenceForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      if(!hasPermission('licences_edit')) return alert('Permission insuffisante');
-      if(!currentCentre) return alert('Sélectionnez un centre');
-      const nom=document.getElementById('nom').value.trim(), dateNais=document.getElementById('dateNaissance').value, lieu=document.getElementById('lieu').value.trim(), sexe=document.getElementById('sexe').value, photoFile=document.getElementById('photoInput').files[0];
-      if(!nom||!dateNais||!lieu||!sexe||!photoFile) return alert('Tous les champs requis');
-      try{
-        const photo=await fileToDataURL(photoFile);
-        const order=await getNextOrder();
-        const numero=buildNumero(currentCentre.name,currentCentre.saison,sexe,order);
-        const categorie=await calculerCategorie(dateNais,currentCentre.saison);
-        const licence={numero,nom,dateNaissance:dateNais,lieu,sexe,centreId:currentCentre.id,centreName:currentCentre.name,saison:currentCentre.saison,categorie,photo,dateCreation:new Date().toISOString().slice(0,10)};
+      if (!hasPermission('licences_edit')) return alert('Permission insuffisante');
+      if (!currentCentre) return alert('Sélectionnez un centre');
+
+      const nom = document.getElementById('nom').value.trim();
+      const dateNais = document.getElementById('dateNaissance').value;
+      const lieu = document.getElementById('lieu').value.trim();
+      const sexe = document.getElementById('sexe').value;
+      const photoFile = document.getElementById('photoInput').files[0];
+
+      if (!nom || !dateNais || !lieu || !sexe || !photoFile) {
+        return alert('Tous les champs sont requis');
+      }
+
+      try {
+        // 1. Convertir la photo en DataURL
+        const photo = await fileToDataURL(photoFile);
+        
+        // 2. Vérifier que le centre est toujours valide (pas changé entre-temps)
+        if (!currentCentre) throw new Error('Centre perdu');
+        
+        const order = await getNextOrder();
+        const numero = buildNumero(currentCentre.name, currentCentre.saison, sexe, order);
+        const categorie = await calculerCategorie(dateNais, currentCentre.saison);
+        const licence = {
+          numero, nom, dateNaissance: dateNais, lieu, sexe,
+          centreId: currentCentre.id,
+          centreName: currentCentre.name,
+          saison: currentCentre.saison,
+          categorie,
+          photo,
+          dateCreation: new Date().toISOString().slice(0,10)
+        };
         await saveLicence(licence);
-        alert('Licence créée : '+numero);
+        alert('Licence créée : ' + numero);
+        
+        // 3. Réinitialiser le formulaire (mais garder le centre actif)
         document.getElementById('licenceForm').reset();
-        document.getElementById('categoriePreview').value='';
+        document.getElementById('categoriePreview').value = '';
+        document.getElementById('photoInput').value = ''; // force l'input file à se vider
+        
+        // 4. Rafraîchir les listes
         await refreshLicenceList();
         await refreshCentresList();
-        if(hasPermission('print')) showCardPreview(licence);
-      }catch(err){ alert('Erreur : '+err.message); }
+        
+        // 5. Afficher l'aperçu si l'utilisateur a le droit d'imprimer
+        if (hasPermission('print')) {
+          showCardPreview(licence);
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Erreur lors de la création : ' + (err.message || 'Veuillez réessayer'));
+      }
     });
 
-    // Licences list
     async function refreshLicenceList(){
       if(!currentCentre){
         document.getElementById('licenceCount').innerText='0';
-        document.querySelector('#licencesTable tbody').innerHTML='<tr><td colspan="6">Aucun centre sélectionné</td></tr>';
+        document.querySelector('#licencesTable tbody').innerHTML='<tr><td colspan="6">Aucun centre sélectionné<\/td><\/tr>';
         return;
       }
       let licences=await loadLicences();
@@ -611,10 +630,10 @@
       tbody.innerHTML='';
       for(const l of filtered){
         let actions = '';
-        if(hasPermission('licences_view')) actions += `<button class="btn btn-sm btn-info view-btn" data-id="${l.id}">👁️</button> `;
-        if(hasPermission('licences_edit')) actions += `<button class="btn btn-sm btn-warning edit-btn" data-id="${l.id}">✏️</button> <button class="btn btn-sm btn-danger delete-btn" data-id="${l.id}">🗑️</button>`;
+        if(hasPermission('licences_view')) actions += `<button class="btn btn-sm btn-info view-btn" data-id="${l.id}">👁️<\/button> `;
+        if(hasPermission('licences_edit')) actions += `<button class="btn btn-sm btn-warning edit-btn" data-id="${l.id}">✏️<\/button> <button class="btn btn-sm btn-danger delete-btn" data-id="${l.id}">🗑️<\/button>`;
         const tr=document.createElement('tr');
-        tr.innerHTML=`<td>${l.numero}</td><td>${l.nom}</td><td>${l.categorie||''}</td><td>${l.saison}</td><td>${l.sexe}</td><td>${actions}</td>`;
+        tr.innerHTML=`<td>${l.numero}<\/td><td>${l.nom}<\/td><td>${l.categorie||''}<\/td><td>${l.saison}<\/td><td>${l.sexe}<\/td><td>${actions}<\/td><\/tr>`;
         tbody.appendChild(tr);
       }
       document.querySelectorAll('.view-btn').forEach(btn=>btn.onclick=async()=>{
@@ -655,7 +674,11 @@
       if(idx===-1) return alert('Licence introuvable');
       let licence=licences[idx];
       let photo=licence.photo;
-      if(photoFile) photo=await fileToDataURL(photoFile);
+      if(photoFile) {
+        try {
+          photo = await fileToDataURL(photoFile);
+        } catch(err) { alert('Erreur lecture photo'); return; }
+      }
       if(licence.sexe!==sexe && currentCentre){
         const order=parseInt(licence.numero.match(/(\d{4})[FM]$/)?.[1]||'0');
         licence.numero=buildNumero(currentCentre.name,licence.saison,sexe,order);
@@ -683,7 +706,7 @@
       const w=window.open('','_blank'); w.document.write(html); w.document.close(); w.print();
     });
 
-    // ----- Fonction UNIQUE de génération de carte -----
+    // Génération carte HTML (identique)
     function genererCarteHTML(licence, orientation, settings) {
       const photoHtml = licence.photo ? `<img src="${licence.photo}" class="photo">` : 'Photo';
       const orgLogoHtml = settings.logo ? `<img src="${settings.logo}" class="org-logo-header">` : '';
@@ -716,7 +739,6 @@
       </div>`;
     }
 
-    // Impression via iframe
     function printHTML(contentHtml) {
       return new Promise((resolve, reject) => {
         const iframe = printFrame;
@@ -737,7 +759,6 @@
       });
     }
 
-    // Planche A4
     async function genererPlancheA4(orientation) {
       if(!hasPermission('print')) return alert('Permission insuffisante');
       if (!currentCentre) { alert('Aucun centre sélectionné'); return; }
@@ -822,7 +843,6 @@
     document.getElementById('btnPlancheA4Portrait').onclick = () => genererPlancheA4('portrait');
     document.getElementById('btnPlancheA4Landscape').onclick = () => genererPlancheA4('landscape');
 
-    // Aperçu individuel
     async function showCardPreview(licence) {
       if(!hasPermission('print')) return;
       const allSettings = await loadSettings();
@@ -901,7 +921,7 @@
         tbody.innerHTML = '';
         csvData.forEach(row => {
           const tr = document.createElement('tr');
-          tr.innerHTML = `<td>${row.nom}</td><td>${row.dateNaissance}</td><td>${row.lieu}</td><td>${row.sexe}</td><td><span class="text-muted">(photo par défaut)</span></td>`;
+          tr.innerHTML = `<td>${row.nom}<\/td><td>${row.dateNaissance}<\/td><td>${row.lieu}<\/td><td>${row.sexe}<\/td><td><span class="text-muted">(photo par défaut)<\/span><\/td><\/tr>`;
           tbody.appendChild(tr);
         });
       };
@@ -1167,7 +1187,7 @@
     document.getElementById('importSettingsFile').onchange = e => { const f = e.target.files[0]; if (f) { const r = new FileReader(); r.onload = ev => importSettingsContent = ev.target.result; r.readAsText(f); } };
     document.getElementById('btnImportSettingsOnly').onclick = async () => { if (!importSettingsContent) return alert('Choisissez un fichier'); if (!confirm('Remplacer la configuration ?')) return; try { const ns = JSON.parse(importSettingsContent); if (!ns.portrait || !ns.landscape) throw new Error(); await savePortraitSettings(ns.portrait); await saveLandscapeSettings(ns.landscape); alert('Paramètres importés'); await loadUISettings(); } catch (e) { alert('Erreur'); } };
 
-    // ---------- Gestion utilisateurs avec permissions ----------
+    // Gestion utilisateurs
     function permsToCheckboxes(perms) {
       document.getElementById('perm_centres_view').checked = perms.centres_view || false;
       document.getElementById('perm_centres_edit').checked = perms.centres_edit || false;
@@ -1199,9 +1219,9 @@
         const perms = u.permissions || {};
         const permSummary = Object.entries(perms).filter(([k,v])=>v).map(([k])=>k.substring(0,3)).join(', ');
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${u.username}</td><td>${permSummary || 'Aucune'}</td>
-        <td><button class="btn btn-sm btn-warning edit-user-btn" data-id="${u.id}" data-username="${u.username}">✏️</button>
-        ${u.username !== currentUser.username ? `<button class="btn btn-sm btn-danger delete-user-btn" data-id="${u.id}" data-username="${u.username}">🗑️</button>` : ''}</td>`;
+        tr.innerHTML = `<td>${u.username}<\/td><td>${permSummary || 'Aucune'}<\/td>
+        <td><button class="btn btn-sm btn-warning edit-user-btn" data-id="${u.id}" data-username="${u.username}">✏️<\/button>
+        ${u.username !== currentUser.username ? `<button class="btn btn-sm btn-danger delete-user-btn" data-id="${u.id}" data-username="${u.username}">🗑️<\/button>` : ''}<\/td><\/tr>`;
         tbody.appendChild(tr);
       }
       document.querySelectorAll('.edit-user-btn').forEach(btn => {
@@ -1256,7 +1276,7 @@
       document.getElementById('editUserId').value = '';
       document.getElementById('userUsername').value = '';
       document.getElementById('userPassword').value = '';
-      permsToCheckboxes({}); // reset
+      permsToCheckboxes({});
       await refreshUsersList();
     });
     document.getElementById('cancelUserEdit').onclick = () => {
